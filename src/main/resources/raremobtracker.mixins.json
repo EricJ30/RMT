@@ -4,10 +4,10 @@
   "package": "net.gayland.raremobtracker.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "TextDisplayAccessor"
   ],
   "client": [
-    "ClientWorldMixin",
-    "TextDisplayAccessor"
+    "TextDisplayEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

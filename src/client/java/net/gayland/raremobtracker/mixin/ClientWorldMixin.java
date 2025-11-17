@@ -26,7 +26,7 @@ public abstract class ClientWorldMixin {
     private static final Set<String> LIST = Set.of(
     "The Elephelk", "Bob", "Unicorn"
 );
-    @Inject(at = @At("HEAD"), method = "addEntity")
+    @Inject(at = @At("RETURN"), method = "addEntity")
     public void onAddEntity(Entity entity, CallbackInfo ci) {
         String name = "";
         String getText = "";
@@ -35,9 +35,11 @@ public abstract class ClientWorldMixin {
         String getName = "";
         String getDisplayName = "";
         if(!RareMobTracker.enabled) return;
-        if(entity.getType().toString().equals("entity.minecraft.armor_stand")){
-        }
+        /*
         if (entity.getType().toString().equals("entity.minecraft.text_display")){
+            TrackedData<Text> textKey = TextDisplayAccessor.getTextTrackedData();
+            Text text = entity.getDataTracker().get(textKey);
+            Text newText = ((TextDisplayEntity)entity).getText();
             Text CustomName = entity.getCustomName();
             if(CustomName != null){
                 getCustomName = CustomName.toString();
@@ -54,40 +56,8 @@ public abstract class ClientWorldMixin {
             if(StyledDisplayName != null){
                 getStyledDisplayName = StyledDisplayName.toString();
             }
-            Text t = Text.of(String.format("getDisplayName %s getStyledDisplayName %s getCustomName %s getName %s.", getDisplayName, getStyledDisplayName, getCustomName, getName));
-                List<Text> a = t.getWithStyle(t.getStyle().withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/compass %d %d %d", entity.getBlockPos().getX(), entity.getBlockPos().getY(), entity.getBlockPos().getZ()))));
-                MutableText mt = Text.empty();
-                for(Text tt : a) {
-                    mt.append(tt);
-                }
-                //MinecraftClient.getInstance().player.sendMessage(mt, false);
-                World world = entity.getEntityWorld();
-                if (!world.isClient) {
-                    //world.playSound(null, MinecraftClient.getInstance().player.getBlockPos(), SoundEvents.ENTITY_WITHER_SPAWN, SoundCategory.BLOCKS, 1.5f, 1f);
-            }
-        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-        /*
-        if (entity instanceof DisplayEntity.TextDisplayEntity td) {
-            TrackedData<Text> key = TextDisplayAccessor.getTextTrackedData();
-            Text tracked = td.getDataTracker().get(key);
-
-            if (tracked != null) {
-                String text = tracked.getString().trim();
-                if (!text.isEmpty()) {
-                                    Text t = Text.of(String.format("Tracked display: %s", text));
+            Text t = Text.of(String.format("getDisplayName %s getStyledDisplayName %s getCustomName %s getName %s Text %s.", getDisplayName, getStyledDisplayName, getCustomName, getName, newText));
                 List<Text> a = t.getWithStyle(t.getStyle().withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/compass %d %d %d", entity.getBlockPos().getX(), entity.getBlockPos().getY(), entity.getBlockPos().getZ()))));
                 MutableText mt = Text.empty();
                 for(Text tt : a) {
@@ -96,13 +66,32 @@ public abstract class ClientWorldMixin {
                 MinecraftClient.getInstance().player.sendMessage(mt, false);
                 World world = entity.getEntityWorld();
                 if (!world.isClient) {
-                    world.playSound(null, MinecraftClient.getInstance().player.getBlockPos(), SoundEvents.ENTITY_WITHER_SPAWN, SoundCategory.BLOCKS, 1.5f, 1f);
-                }
-                }
+                    //world.playSound(null, MinecraftClient.getInstance().player.getBlockPos(), SoundEvents.ENTITY_WITHER_SPAWN, SoundCategory.BLOCKS, 1.5f, 1f);
             }
         }
         */
 
+        if (entity instanceof DisplayEntity.TextDisplayEntity textDisplay) {
+            TrackedData<Text> textKey = TextDisplayAccessor.getTextTrackedData();
+            Text text = textDisplay.getDataTracker().get(textKey);
+            Text directText = textDisplay.getText();
+            if (text != null) {
+                String displayText = text.getString().trim();
+                
+                // ... rest of your logic
+                Text t = Text.of(String.format("Rare mob [%s] [%s] type [%s] spawned at [%s]. Click to set compass target.", displayText, directText, entity.getType().toString(), entity.getBlockPos().toShortString()));
+                List<Text> a = t.getWithStyle(t.getStyle().withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/compass %d %d %d", entity.getBlockPos().getX(), entity.getBlockPos().getY(), entity.getBlockPos().getZ()))));
+                MutableText mt = Text.empty();
+                for(Text tt : a) {
+                    mt.append(tt);
+                }
+                MinecraftClient.getInstance().player.sendMessage(mt, false);
+                World world = entity.getEntityWorld();
+                if (!world.isClient) {
+                    //world.playSound(null, MinecraftClient.getInstance().player.getBlockPos(), SoundEvents.ENTITY_WITHER_SPAWN, SoundCategory.BLOCKS, 1.5f, 1f);
+            }
+        }
+}
 
 
 
@@ -153,14 +142,14 @@ public abstract class ClientWorldMixin {
         // If no name was detected, stop here.
         //if (name.isEmpty()) return;
         //LIST.contains(name)
-        if(name.isEmpty()) {
+        if(!name.isEmpty()) {
             Text t = Text.of(String.format("Rare mob [%s] type [%s] spawned at [%s]. Click to set compass target.", name, entity.getType().toString(), entity.getBlockPos().toShortString()));
             List<Text> a = t.getWithStyle(t.getStyle().withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/compass %d %d %d", entity.getBlockPos().getX(), entity.getBlockPos().getY(), entity.getBlockPos().getZ()))));
             MutableText mt = Text.empty();
             for(Text tt : a) {
                 mt.append(tt);
             }
-            MinecraftClient.getInstance().player.sendMessage(mt, false);
+            //MinecraftClient.getInstance().player.sendMessage(mt, false);
             World world = entity.getEntityWorld();
             if (!world.isClient) {
                 world.playSound(null, MinecraftClient.getInstance().player.getBlockPos(), SoundEvents.ENTITY_WITHER_SPAWN, SoundCategory.BLOCKS, 1.5f, 1f);
