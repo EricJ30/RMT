@@ -1,4 +1,4 @@
-package net.gayland.raremobtracker;
+package net.leafish.raremobtracker;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;

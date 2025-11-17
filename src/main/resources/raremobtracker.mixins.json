@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.gayland.raremobtracker.mixin",
+  "package": "net.leafish.raremobtracker.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "TextDisplayAccessor"

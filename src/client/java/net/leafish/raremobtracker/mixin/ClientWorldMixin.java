@@ -1,6 +1,6 @@
-package net.gayland.raremobtracker.mixin;
+package net.leafish.raremobtracker.mixin;
 
-import net.gayland.raremobtracker.RareMobTracker;
+import net.leafish.raremobtracker.RareMobTracker;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;

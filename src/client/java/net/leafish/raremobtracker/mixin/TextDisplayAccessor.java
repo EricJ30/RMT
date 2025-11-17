@@ -1,4 +1,4 @@
-package net.gayland.raremobtracker.mixin;
+package net.leafish.raremobtracker.mixin;
 
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.decoration.DisplayEntity;

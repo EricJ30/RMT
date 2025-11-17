@@ -3,9 +3,9 @@
   "id": "raremobtracker",
   "version": "${version}",
   "name": "RareMobTracker",
-  "description": "A rare mob tracker for Wynncraft",
+  "description": "1.21.4 rare mob tracker",
   "authors": [
-    "gayland"
+    "leafish"
   ],
   "contact": {},
   "license": "All-Rights-Reserved",
@@ -13,7 +13,7 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "net.gayland.raremobtracker.RareMobTracker"
+      "net.leafish.raremobtracker.RareMobTracker"
     ]
   },
   "mixins": [
